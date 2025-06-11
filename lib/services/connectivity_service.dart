@@ -8,10 +8,8 @@ class ConnectivityService {
   bool _wasConnected = true;
 
   void startMonitoring() async {
-    // Check initial connectivity
     await _checkConnectivity();
 
-    // Listen for connectivity changes
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen((
       results,
     ) async {
@@ -27,13 +25,11 @@ class ConnectivityService {
   Future<void> _handleConnectivityChange(ConnectivityResult result) async {
     final bool isConnected = result != ConnectivityResult.none;
 
-    // If we were connected before but now disconnected
     if (_wasConnected && !isConnected) {
       final firebaseService = await FirebaseService.instance;
       await firebaseService.logNetworkEvent();
     }
 
-    // Update the connection state
     _wasConnected = isConnected;
   }
 
